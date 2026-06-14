@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>FlySpaceA — Historical Backfill Status</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: oklch(0.17 0.02 260);
+    --panel: oklch(0.22 0.025 260);
+    --panel2: oklch(0.26 0.03 260);
+    --line: oklch(0.32 0.03 260);
+    --fg: oklch(0.95 0.01 260);
+    --muted: oklch(0.7 0.02 260);
+    --accent: oklch(0.72 0.15 230);
+    --ok: oklch(0.74 0.16 150);
+    --warn: oklch(0.8 0.16 85);
+    --bad: oklch(0.68 0.2 25);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: radial-gradient(120% 100% at 50% 0%, oklch(0.2 0.03 260), var(--bg));
+    color: var(--fg);
+    min-height: 100vh;
+  }
+  main { max-width: 880px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem); }
+
+  header { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 1rem; margin-bottom: 1.5rem; }
+  header h1 { font-size: clamp(1.3rem, 4vw, 1.9rem); margin: 0; letter-spacing: -.02em; }
+  header .sub { color: var(--muted); font-size: .95rem; }
+
+  .badge { display: inline-flex; align-items: center; gap: .4rem; font-size: .8rem; font-weight: 600;
+           padding: .25rem .6rem; border-radius: 999px; border: 1px solid var(--line); }
+  .badge .dot { width: .55rem; height: .55rem; border-radius: 50%; background: var(--muted); }
+  .badge.live { color: var(--ok); border-color: color-mix(in oklch, var(--ok) 40%, transparent); }
+  .badge.live .dot { background: var(--ok); box-shadow: 0 0 0 0 color-mix(in oklch, var(--ok) 70%, transparent);
+                     animation: pulse 2s infinite; }
+  .badge.idle { color: var(--muted); }
+  .badge.done { color: var(--accent); border-color: color-mix(in oklch, var(--accent) 40%, transparent); }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--ok) 60%, transparent); }
+                     70% { box-shadow: 0 0 0 .5rem transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 1rem;
+           padding: clamp(1rem, 3vw, 1.5rem); margin-bottom: 1.25rem; }
+
+  .progress-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .pct { font-size: clamp(2.2rem, 9vw, 3.4rem); font-weight: 700; line-height: 1; letter-spacing: -.03em; }
+  .pct small { font-size: .4em; font-weight: 600; color: var(--muted); margin-left: .15em; }
+  .meta { color: var(--muted); text-align: right; }
+  .meta b { color: var(--fg); }
+  .bar { height: .75rem; border-radius: 999px; background: var(--panel2); overflow: hidden; margin-top: 1rem; }
+  .bar > i { display: block; height: 100%; border-radius: inherit;
+             background: linear-gradient(90deg, var(--accent), oklch(0.78 0.15 180));
+             transition: width .6s ease; }
+
+  .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .stat { background: var(--panel2); border: 1px solid var(--line); border-radius: .75rem; padding: 1rem; }
+  .stat .n { font-size: clamp(1.4rem, 5vw, 1.9rem); font-weight: 700; letter-spacing: -.02em; }
+  .stat .l { color: var(--muted); font-size: .82rem; margin-top: .2rem; }
+  .stat .x { color: var(--ok); font-size: .8rem; font-weight: 600; margin-top: .35rem; }
+
+  h2 { font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+       margin: 0 0 .9rem; font-weight: 700; }
+
+  .gemini { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+  .gemini .row { display: flex; justify-content: space-between; padding: .4rem 0; border-bottom: 1px solid var(--line); }
+  .gemini .row:last-child { border-bottom: 0; }
+  .gemini .k { color: var(--muted); }
+  .gemini .total { font-size: 1.5rem; font-weight: 700; }
+  .note { color: var(--muted); font-size: .78rem; margin-top: .8rem; }
+
+  .runs { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .runs .r { width: 1.5rem; height: 1.5rem; border-radius: .4rem; background: var(--ok);
+             display: grid; place-items: center; font-size: .7rem; }
+  .runs .r.failed { background: var(--bad); }
+  .runs .r.running { background: var(--warn); animation: pulse 2s infinite; }
+  .runs-legend { color: var(--muted); font-size: .8rem; margin-top: .7rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  footer { color: var(--muted); font-size: .78rem; text-align: center; margin-top: 2rem; line-height: 1.7; }
+  a { color: var(--accent); }
+  #err { display: none; background: color-mix(in oklch, var(--bad) 18%, var(--panel));
+         border-color: color-mix(in oklch, var(--bad) 45%, transparent); }
+  @media (max-width: 520px) { .gemini { grid-template-columns: 1fr; } .meta { text-align: left; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>FlySpaceA · Historical Backfill</h1>
+    <span id="state" class="badge idle"><span class="dot"></span><span id="state-txt">loading…</span></span>
+    <span class="sub" id="updated"></span>
+  </header>
+
+  <div class="panel" id="err">⚠ Couldn’t load <code>status.json</code>. Showing nothing yet — it may not be published, or your network blocked it.</div>
+
+  <section class="panel">
+    <div class="progress-head">
+      <div class="pct"><span id="pct">—</span><small>%</small></div>
+      <div class="meta">
+        <div><b id="done">—</b> of <b id="total">—</b> schedule dates</div>
+        <div><b id="remaining">—</b> remaining · ETA <b id="eta">—</b></div>
+      </div>
+    </div>
+    <div class="bar"><i id="barfill" style="width:0%"></i></div>
+  </section>
+
+  <section class="panel">
+    <h2>Data loaded</h2>
+    <div class="grid">
+      <div class="stat"><div class="n" id="s-backfill">—</div><div class="l">flights loaded by backfill</div></div>
+      <div class="stat"><div class="n" id="s-archived">—</div><div class="l">archived flights (total)</div><div class="x" id="s-archived-x"></div></div>
+      <div class="stat"><div class="n" id="s-live">—</div><div class="l">live flights</div></div>
+      <div class="stat"><div class="n" id="s-airports">—</div><div class="l">airports</div><div class="x" id="s-airports-x"></div></div>
+      <div class="stat"><div class="n" id="s-pending">—</div><div class="l">airports pending review</div></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Gemini usage</h2>
+    <div class="gemini">
+      <div>
+        <div class="row"><span class="k">Flash — calls</span><span id="g-flash-calls">—</span></div>
+        <div class="row"><span class="k">Flash — cost</span><span id="g-flash-cost">—</span></div>
+        <div class="row"><span class="k">Pro — calls</span><span id="g-pro-calls">—</span></div>
+        <div class="row"><span class="k">Pro — cost</span><span id="g-pro-cost">—</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-end">
+        <div class="k" style="color:var(--muted)">total est. cost</div>
+        <div class="total" id="g-total">—</div>
+      </div>
+    </div>
+    <div class="note" id="g-note"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Recent pipeline runs</h2>
+    <div class="runs" id="runs"></div>
+    <div class="runs-legend">
+      <span>◼ <span style="color:var(--ok)">ok</span></span>
+      <span>◼ <span style="color:var(--warn)">running</span></span>
+      <span>◼ <span style="color:var(--bad)">failed (auto-retried)</span></span>
+    </div>
+  </section>
+
+  <footer>
+    Auto-updated from the flight-data pipeline · figures are aggregate and sanitized · not real-time.<br>
+    Historical Space-A schedules are loaded SQL-only and remain invisible in the app by design.
+  </footer>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = n => (n == null ? "—" : Number(n).toLocaleString());
+const usd = n => (n == null ? "—" : "$" + Number(n).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+
+function ago(iso) {
+  if (!iso) return "—";
+  const s = Math.max(0, (Date.now() - new Date(iso)) / 1000);
+  if (s < 60) return Math.floor(s) + "s ago";
+  if (s < 3600) return Math.floor(s / 60) + "m ago";
+  if (s < 86400) return Math.floor(s / 3600) + "h ago";
+  return Math.floor(s / 86400) + "d ago";
+}
+
+function setState(d) {
+  const b = $("state"), t = $("state-txt");
+  b.className = "badge " + (d.complete ? "done" : d.active ? "live" : "idle");
+  t.textContent = d.complete ? "complete" : d.active ? "running" : "idle";
+}
+
+function render(d) {
+  $("err").style.display = "none";
+  setState(d);
+  $("updated").textContent = "updated " + ago(d.updated_at);
+
+  const p = d.progress || {};
+  $("pct").textContent = p.percent ?? "—";
+  $("barfill").style.width = (p.percent ?? 0) + "%";
+  $("done").textContent = fmt(p.dates_done);
+  $("total").textContent = fmt(p.dates_total);
+  $("remaining").textContent = fmt(p.dates_remaining);
+  $("eta").textContent = d.complete ? "done" : (d.eta_hours != null ? "~" + d.eta_hours + "h" : "—");
+
+  const s = d.stats || {}, a = d.added || {};
+  $("s-backfill").textContent = fmt(a.flights_by_backfill);
+  $("s-archived").textContent = fmt(s.archived_flights);
+  $("s-archived-x").textContent = a.archived_since_tracking ? "+" + fmt(a.archived_since_tracking) + " since tracking" : "";
+  $("s-live").textContent = fmt(s.flights);
+  $("s-airports").textContent = fmt(s.airports);
+  $("s-airports-x").textContent = a.airports_since_tracking ? "+" + fmt(a.airports_since_tracking) + " new" : "";
+  $("s-pending").textContent = fmt(s.pending_review);
+
+  const g = d.gemini || {}, f = g.flash || {}, pr = g.pro || {};
+  $("g-flash-calls").textContent = fmt(f.calls);
+  $("g-flash-cost").textContent = usd(f.cost_usd);
+  $("g-pro-calls").textContent = fmt(pr.calls);
+  $("g-pro-cost").textContent = usd(pr.cost_usd);
+  $("g-total").textContent = usd(g.total_cost_usd);
+  $("g-note").textContent = g.since
+    ? "Pipeline Gemini usage since " + g.since.slice(0, 10) + " — includes the scheduled 6-hourly runs. Cost computed from token counts."
+    : "";
+
+  const wrap = $("runs"); wrap.innerHTML = "";
+  (d.recent_runs || []).forEach(r => {
+    const el = document.createElement("div");
+    el.className = "r " + r.status;
+    el.title = (r.status) + (r.at ? " · " + new Date(r.at).toLocaleString() : "");
+    el.textContent = r.status === "ok" ? "✓" : r.status === "failed" ? "✕" : "…";
+    wrap.appendChild(el);
+  });
+}
+
+async function tick() {
+  try {
+    const r = await fetch("status.json?t=" + Date.now(), {cache: "no-store"});
+    if (!r.ok) throw new Error(r.status);
+    render(await r.json());
+  } catch (e) {
+    $("err").style.display = "block";
+  }
+}
+tick();
+setInterval(tick, 60000);
+</script>
+</body>
+</html>

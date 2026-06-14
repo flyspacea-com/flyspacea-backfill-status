@@ -1,0 +1,91 @@
+{
+  "updated_at": "2026-06-14T20:37:47+00:00",
+  "complete": false,
+  "active": true,
+  "progress": {
+    "dates_total": 103,
+    "dates_done": 7,
+    "dates_remaining": 96,
+    "percent": 7
+  },
+  "eta_hours": 32.1,
+  "last_run_at": "2026-06-14T20:35:44+00:00",
+  "recent_runs": [
+    {
+      "status": "running",
+      "at": null
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-14T20:35:44.675102Z"
+    },
+    {
+      "status": "failed",
+      "at": "2026-06-14T20:28:08.667211Z"
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-14T20:23:20.686789Z"
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-14T20:16:14.677736Z"
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-14T19:56:12.646205Z"
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-14T19:33:02.648206Z"
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-14T18:15:44.598371Z"
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-14T12:13:54.413879Z"
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-14T06:13:50.048916Z"
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-14T00:15:19.795338Z"
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-13T21:48:01.772101Z"
+    }
+  ],
+  "stats": {
+    "flights": 646,
+    "archived_flights": 3809,
+    "airports": 329,
+    "pending_review": 14,
+    "aliases": 3545
+  },
+  "added": {
+    "flights_by_backfill": 3382,
+    "airports_since_tracking": 0,
+    "archived_since_tracking": 0
+  },
+  "gemini": {
+    "flash": {
+      "calls": 395,
+      "input_tokens": 1702821,
+      "output_tokens": 169249,
+      "cost_usd": 0.051
+    },
+    "pro": {
+      "calls": 242,
+      "input_tokens": 171324,
+      "output_tokens": 64749,
+      "cost_usd": 1.1196
+    },
+    "total_cost_usd": 1.1706,
+    "since": "2026-06-13T00:00:00Z"
+  }
+}
