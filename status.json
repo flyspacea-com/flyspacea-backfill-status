@@ -1,19 +1,23 @@
 {
-  "updated_at": "2026-06-14T20:42:19+00:00",
+  "updated_at": "2026-06-14T22:07:47+00:00",
   "complete": false,
   "active": true,
   "progress": {
     "dates_total": 103,
-    "dates_done": 8,
-    "dates_remaining": 95,
-    "percent": 8
+    "dates_done": 9,
+    "dates_remaining": 94,
+    "percent": 9
   },
-  "eta_hours": 12.0,
-  "last_run_at": "2026-06-14T20:40:38+00:00",
+  "eta_hours": 11.9,
+  "last_run_at": "2026-06-14T20:43:10+00:00",
   "recent_runs": [
     {
       "status": "running",
       "at": null
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-14T20:43:10.704159Z"
     },
     {
       "status": "ok",
@@ -54,10 +58,6 @@
     {
       "status": "ok",
       "at": "2026-06-14T06:13:50.048916Z"
-    },
-    {
-      "status": "ok",
-      "at": "2026-06-14T00:15:19.795338Z"
     }
   ],
   "stats": {
@@ -74,18 +74,18 @@
   },
   "gemini": {
     "flash": {
-      "calls": 395,
-      "input_tokens": 1702821,
-      "output_tokens": 169249,
-      "cost_usd": 0.051
+      "calls": 460,
+      "input_tokens": 1995737,
+      "output_tokens": 195429,
+      "cost_usd": 0.0595
     },
     "pro": {
-      "calls": 242,
-      "input_tokens": 171324,
-      "output_tokens": 64749,
-      "cost_usd": 1.1196
+      "calls": 253,
+      "input_tokens": 177708,
+      "output_tokens": 67668,
+      "cost_usd": 1.1674
     },
-    "total_cost_usd": 1.1706,
+    "total_cost_usd": 1.2269,
     "since": "2026-06-13T00:00:00Z"
   }
 }
