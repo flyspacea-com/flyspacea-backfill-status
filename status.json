@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-14T23:59:13+00:00",
+  "updated_at": "2026-06-15T00:04:20+00:00",
   "complete": false,
   "active": true,
   "progress": {
@@ -11,6 +11,10 @@
   "eta_hours": 10.0,
   "last_run_at": "2026-06-14T23:47:26+00:00",
   "recent_runs": [
+    {
+      "status": "running",
+      "at": null
+    },
     {
       "status": "ok",
       "at": "2026-06-14T23:47:26.946160Z"
@@ -54,10 +58,6 @@
     {
       "status": "ok",
       "at": "2026-06-14T22:21:45.116555Z"
-    },
-    {
-      "status": "ok",
-      "at": "2026-06-14T22:09:07.092484Z"
     }
   ],
   "stats": {
