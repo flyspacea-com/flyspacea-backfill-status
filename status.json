@@ -1,19 +1,23 @@
 {
-  "updated_at": "2026-06-15T03:20:25+00:00",
+  "updated_at": "2026-06-15T03:26:11+00:00",
   "complete": false,
   "active": true,
   "progress": {
     "dates_total": 103,
-    "dates_done": 47,
-    "dates_remaining": 56,
-    "percent": 46
+    "dates_done": 48,
+    "dates_remaining": 55,
+    "percent": 47
   },
-  "eta_hours": 5.7,
-  "last_run_at": "2026-06-15T03:18:11+00:00",
+  "eta_hours": 5.2,
+  "last_run_at": "2026-06-15T03:21:15+00:00",
   "recent_runs": [
     {
       "status": "running",
       "at": null
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-15T03:21:15.647234Z"
     },
     {
       "status": "ok",
@@ -54,38 +58,34 @@
     {
       "status": "ok",
       "at": "2026-06-15T02:17:21.355218Z"
-    },
-    {
-      "status": "ok",
-      "at": "2026-06-15T02:07:07.275662Z"
     }
   ],
   "stats": {
-    "flights": 2588,
+    "flights": 3197,
     "archived_flights": 3809,
-    "airports": 365,
+    "airports": 370,
     "pending_review": 20,
-    "aliases": 3991
+    "aliases": 4086
   },
   "added": {
     "flights_by_backfill": 3382,
-    "airports_since_tracking": 34,
+    "airports_since_tracking": 39,
     "archived_since_tracking": 0
   },
   "gemini": {
     "flash": {
-      "calls": 1272,
-      "input_tokens": 5509299,
-      "output_tokens": 540286,
-      "cost_usd": 0.1642
+      "calls": 1577,
+      "input_tokens": 6825479,
+      "output_tokens": 671258,
+      "cost_usd": 0.2036
     },
     "pro": {
-      "calls": 644,
-      "input_tokens": 437206,
-      "output_tokens": 171557,
-      "cost_usd": 2.9331
+      "calls": 737,
+      "input_tokens": 496743,
+      "output_tokens": 195468,
+      "cost_usd": 3.3391
     },
-    "total_cost_usd": 3.0973,
+    "total_cost_usd": 3.5427,
     "since": "2026-06-13T00:00:00Z"
   }
 }
