@@ -1,19 +1,23 @@
 {
-  "updated_at": "2026-06-15T06:42:43+00:00",
+  "updated_at": "2026-06-15T06:47:52+00:00",
   "complete": false,
   "active": true,
   "progress": {
     "dates_total": 103,
-    "dates_done": 73,
-    "dates_remaining": 30,
-    "percent": 71
+    "dates_done": 74,
+    "dates_remaining": 29,
+    "percent": 72
   },
-  "eta_hours": 4.6,
-  "last_run_at": "2026-06-15T06:38:59+00:00",
+  "eta_hours": 4.4,
+  "last_run_at": "2026-06-15T06:43:37+00:00",
   "recent_runs": [
     {
       "status": "running",
       "at": null
+    },
+    {
+      "status": "ok",
+      "at": "2026-06-15T06:43:37.403045Z"
     },
     {
       "status": "ok",
@@ -54,10 +58,6 @@
     {
       "status": "ok",
       "at": "2026-06-15T05:09:43.166115Z"
-    },
-    {
-      "status": "ok",
-      "at": "2026-06-15T05:03:03.418216Z"
     }
   ],
   "stats": {
